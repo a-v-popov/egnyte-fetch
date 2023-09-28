@@ -47,9 +47,12 @@ if args.info:
 link = info['downloadLink']
 file = info['filename']
 
-cmd = ['wget', '-O', file, url+link]
+cmd = ['wget', '-O', file]
+
+url += link
 
 if args.dry_run:
-    print(' '.join(cmd))
+    print(' '.join(cmd) + ' ' + url)
 else:
-    r = subprocess.run(cmd)
+    cmd.extend(['-i', '-'])
+    proc = subprocess.run(cmd, input = url.encode())
